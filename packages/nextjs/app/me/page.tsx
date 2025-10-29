@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 
 type Goal = {
   id: string;
@@ -38,7 +38,7 @@ export default function MePage() {
   const [scope, setScope] = useState("");
   const [deadline, setDeadline] = useState("");
   const [loading, setLoading] = useState(false);
-  const [msg, setMsg] = useState<string | null>(null);
+  const [msg, setMsg] = useState<ReactNode | null>(null);
   const [answers, setAnswers] = useState<Record<string, { a1: string; a2: string }>>({});
 
   useEffect(() => {
@@ -118,13 +118,20 @@ export default function MePage() {
     setLoading(true);
     try {
       const a = answers[g.id] || { a1: '', a2: '' };
-      await fetchJSON('/api/goal/evaluate', {
+      const d = await fetchJSON('/api/goal/evaluate', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({ goalId: g.id, a1: a.a1, a2: a.a2 }),
       });
       await refresh();
-      setMsg('Evaluation complete.');
+      setMsg(
+        <span>
+          Evaluation complete.{' '}
+          {d?.txUrl && (
+            <a className="underline" href={d.txUrl} target="_blank" rel="noreferrer">View on explorer</a>
+          )}
+        </span>
+      );
     } catch (e:any) {
       setMsg(`Evaluation failed: ${e.message}`);
     } finally {

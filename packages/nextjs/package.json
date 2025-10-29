@@ -16,6 +16,7 @@
     "vercel:login": "vercel login"
   },
   "dependencies": {
+    "@ethereum-attestation-service/eas-sdk": "^1.4.0",
     "@heroicons/react": "^2.1.5",
     "@prisma/client": "^6.18.0",
     "@rainbow-me/rainbowkit": "2.2.8",

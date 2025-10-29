@@ -29,9 +29,11 @@ export async function POST(req: Request) {
     const result = (String(judge.result || "").toUpperCase() === "PASS") ? "PASS" : "FAIL";
 
     let attn: string | null = null;
+    let attnTxUrl: string | undefined;
     if (result === "PASS") {
-      const r = await attestGoal({ goalId, result: "PASS" });
+      const r = await attestGoal({ goalId, result: "PASS", recipientAddress: goal.user.address });
       attn = r.uid;
+      attnTxUrl = r.txUrl;
     }
 
     const updated = await prisma.goal.update({
@@ -41,11 +43,11 @@ export async function POST(req: Request) {
         judgeResult: judge.result ?? result,
         status: result === "PASS" ? "PASSED" : "FAILED",
         attestationUid: attn || undefined,
-        notes: `Q1: ${q1}\nA1: ${a1}\nQ2: ${q2}\nA2: ${a2}\nJudge: ${judge.result}${judge.reason ? " ("+judge.reason+")" : ""}`,
+        notes: `Q1: ${q1}\nA1: ${a1}\nQ2: ${q2}\nA2: ${a2}\nJudge: ${judge.result}${judge.reason ? " ("+judge.reason+")" : ""}${attnTxUrl ? `\nTx: ${attnTxUrl}` : ""}`,
       },
     });
 
-    return NextResponse.json({ ok: true, goal: updated }, { status: 200 });
+    return NextResponse.json({ ok: true, goal: updated, txUrl: attnTxUrl }, { status: 200 });
   } catch (e: any) {
     return NextResponse.json({ error: String(e?.message || e) }, { status: 500 });
   }
