@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Lavender theme */
+:root {
+  --lavender-50: #f6f5fb;
+  --lavender-100: #ebe9f7;
+  --lavender-200: #d7d3ef;
+  --lavender-300: #beb6e3;
+  --lavender-400: #a195d6;
+  --lavender-500: #8b7dcb;
+  --lavender-600: #7a6bc0;
+  --lavender-700: #6958b6;
+  --lavender-800: #5746a7;
+  --lavender-900: #463a87;
+}
+
+body {
+  background: var(--lavender-50);
+  color: #171717;
+}
+
+.card {
+  @apply rounded-2xl border bg-white shadow-sm p-5;
+  border-color: var(--lavender-200);
+}
+
+.btn {
+  @apply px-4 py-2 rounded-xl font-medium border;
+  border-color: var(--lavender-300);
+  background: var(--lavender-100);
+}
+
+.btn-primary {
+  background: var(--lavender-700);
+  color: white;
+  border-color: var(--lavender-800);
+}
+
+.input, .textarea, .select {
+  @apply w-full rounded-xl border px-3 py-2;
+  border-color: var(--lavender-300);
+  background: white;
+}

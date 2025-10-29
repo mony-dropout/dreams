@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GoalStatus {
+  PENDING
+  PASSED
+  FAILED
+}
+
+model User {
+  id        String  @id @default(uuid())
+  address   String  @unique
+  name      String?
+  createdAt DateTime @default(now())
+  goals     Goal[]
+}
+
+model Goal {
+  id             String     @id @default(uuid())
+  user           User       @relation(fields: [userId], references: [id])
+  userId         String
+  title          String
+  scope          String
+  deadline       DateTime
+  status         GoalStatus @default(PENDING)
+  questionsJson  Json?
+  answersJson    Json?
+  judgeResult    String?    // "PASS" | "FAIL" | message
+  attestationUid String?
+  notes          String?    // free-form user notes
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([userId])
+  @@index([status, deadline])
+}
