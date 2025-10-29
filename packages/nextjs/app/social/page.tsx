@@ -18,7 +18,14 @@ export default async function Social() {
               <div className="text-sm opacity-70">{g.scope}</div>
               <div className="text-xs mt-1">By <Link className="underline" href={`/u/${g.user.address}`}>{g.user.address.slice(0,8)}…</Link></div>
             </div>
-            {g.attestationUid && <div className="text-xs">Attn: <code>{g.attestationUid.slice(0,10)}...</code></div>}
+            <div className="text-right space-y-1">
+              {g.attestationUid && <div className="text-xs">Attn: <code>{g.attestationUid.slice(0,10)}...</code></div>}
+              {g.attestationTxUrl && (
+                <div>
+                  <a className="text-xs underline" href={g.attestationTxUrl} target="_blank" rel="noreferrer">See blockchain proof</a>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       ))}

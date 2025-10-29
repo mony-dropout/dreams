@@ -33,6 +33,7 @@ model Goal {
   answersJson    Json?
   judgeResult    String?    // "PASS" | "FAIL" | message
   attestationUid String?
+  attestationTxUrl String?
   notes          String?    // free-form user notes
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt

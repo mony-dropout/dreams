@@ -12,6 +12,7 @@ type Goal = {
   answersJson?: { a1?: string; a2?: string } | null;
   judgeResult?: string | null;
   attestationUid?: string | null;
+  attestationTxUrl?: string | null;
   notes?: string | null;
 };
 
@@ -219,6 +220,11 @@ export default function MePage() {
             {g.status !== 'PENDING' && (
               <div className="mt-3 text-sm space-y-2">
                 <div>Result: <b>{g.judgeResult}</b></div>
+                {g.attestationTxUrl && (
+                  <div>
+                    <a className="underline" href={g.attestationTxUrl} target="_blank" rel="noreferrer">See blockchain proof</a>
+                  </div>
+                )}
                 {g.notes && (
                   <pre className="p-3 bg-[var(--lavender-50)] rounded-xl whitespace-pre-wrap">{g.notes}</pre>
                 )}

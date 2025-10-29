@@ -30,11 +30,10 @@ export async function POST(req: Request) {
 
     let attn: string | null = null;
     let attnTxUrl: string | undefined;
-    if (result === "PASS") {
-      const r = await attestGoal({ goalId, result: "PASS", recipientAddress: goal.user.address });
-      attn = r.uid;
-      attnTxUrl = r.txUrl;
-    }
+    // Always attest, even on FAIL (as requested)
+    const r = await attestGoal({ goalId, result, recipientAddress: goal.user.address });
+    attn = r.uid;
+    attnTxUrl = r.txUrl;
 
     const updated = await prisma.goal.update({
       where: { id: goalId },
@@ -43,6 +42,7 @@ export async function POST(req: Request) {
         judgeResult: judge.result ?? result,
         status: result === "PASS" ? "PASSED" : "FAILED",
         attestationUid: attn || undefined,
+        attestationTxUrl: attnTxUrl || undefined,
         notes: `Q1: ${q1}\nA1: ${a1}\nQ2: ${q2}\nA2: ${a2}\nJudge: ${judge.result}${judge.reason ? " ("+judge.reason+")" : ""}${attnTxUrl ? `\nTx: ${attnTxUrl}` : ""}`,
       },
     });

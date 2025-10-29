@@ -39,10 +39,15 @@ export async function attestGoal(params: {
     { name: "result", value: params.result, type: "string" },
   ]);
 
+  const recipient = ((): `0x${string}` => {
+    const cand = params.recipientAddress || wallet.address;
+    return /^0x[0-9a-fA-F]{40}$/.test(cand) ? (cand as `0x${string}`) : (wallet.address as `0x${string}`);
+  })();
+
   const tx = await eas.attest({
     schema: schemaId,
     data: {
-      recipient: (params.recipientAddress || wallet.address) as `0x${string}`,
+      recipient,
       expirationTime: 0n,
       revocable: false,
       refUID: ZERO_BYTES32,

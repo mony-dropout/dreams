@@ -39,6 +39,11 @@ export default async function PublicProfile({ params }: { params: { address: str
             <div className="text-sm opacity-70">{g.scope}</div>
             <div className="text-sm mt-1">Status: <b>{g.status}</b></div>
             {g.attestationUid && <div className="text-xs mt-1">Attestation: <code>{g.attestationUid.slice(0,10)}...</code></div>}
+            {g.attestationTxUrl && (
+              <div className="text-xs mt-1">
+                <a className="underline" href={g.attestationTxUrl} target="_blank" rel="noreferrer">See blockchain proof</a>
+              </div>
+            )}
             {g.questionsJson && g.answersJson && (
               <details className="mt-2">
                 <summary className="cursor-pointer">See notes</summary>
